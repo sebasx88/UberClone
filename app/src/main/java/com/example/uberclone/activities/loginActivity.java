@@ -1,8 +1,7 @@
-package com.example.uberclone;
+package com.example.uberclone.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -10,13 +9,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.uberclone.R;
+import com.example.uberclone.include.MyToolbar;
+import com.example.uberclone.providers.AuthProvider;
+import com.example.uberclone.providers.ClientProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import dmax.dialog.SpotsDialog;
 
@@ -26,9 +26,9 @@ public class loginActivity extends AppCompatActivity {
     TextInputEditText getmTextInputPassword;
     Button mButtonLogin;
 
-    FirebaseAuth mAuth;
-    FirebaseDatabase mDatabase;
-    Toolbar mToolbar;
+    AuthProvider mAuthProvider;
+    ClientProvider mClientProvider;
+
     AlertDialog mDialog;
 
     @Override
@@ -36,17 +36,15 @@ public class loginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Login");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        MyToolbar.show(this, "Login de Usuario", true);
+
 
         mTextInputEmail = findViewById(R.id.textInputEmail);
         getmTextInputPassword = findViewById(R.id.textInputPassword);
         mButtonLogin = findViewById(R.id.btnLogin);
 
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance();
+        mAuthProvider = new AuthProvider();
+        mClientProvider = new ClientProvider();
 
         mDialog = new SpotsDialog.Builder().setContext(loginActivity.this).setMessage("Espere un momento").build();
 
@@ -67,7 +65,7 @@ public class loginActivity extends AppCompatActivity {
         if (!email.isEmpty() && !password.isEmpty()){
             if (password.length() >=6 ){
                 mDialog.show();
-                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                mAuthProvider.login(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
@@ -82,8 +80,9 @@ public class loginActivity extends AppCompatActivity {
             }else{
                 Toast.makeText(this, "La contraseña debe tener mas de 6 caracteres", Toast.LENGTH_SHORT).show();
             }
-        }else{
+        }else {
             Toast.makeText(this, "La contraseña y el email son obligatorios", Toast.LENGTH_SHORT).show();
         }
     }
 }
+
