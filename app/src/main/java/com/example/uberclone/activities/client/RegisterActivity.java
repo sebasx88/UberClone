@@ -26,7 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    SharedPreferences mPref;
     AuthProvider mAuthProvider;
     ClientProvider mClientProvider;
     AlertDialog mDialog;
@@ -46,7 +45,6 @@ public class RegisterActivity extends AppCompatActivity {
        mAuthProvider = new AuthProvider();
        mClientProvider = new ClientProvider();
 
-        mPref = getApplicationContext().getSharedPreferences("typeUser", MODE_PRIVATE);
         //String selectedUser = mPref.getString("user", "");
         //Toast.makeText(this, "El valor seleccionado es " + selectedUser, Toast.LENGTH_SHORT).show();
         mButtonRegister = findViewById(R.id.btnRegister);
