@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.uberclone.R;
+import com.example.uberclone.activities.driver.MapDriverActivity;
+import com.example.uberclone.activities.driver.RegisterDriverActivity;
 import com.example.uberclone.include.MyToolbar;
 import com.example.uberclone.models.Client;
 import com.example.uberclone.providers.AuthProvider;
@@ -100,6 +103,10 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
                     Toast.makeText(RegisterActivity.this, "El registro se realizo", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(RegisterActivity.this, MapClientActivity.class);
+                    //Con el Flags evitamos que el conductor se pueda devolver al formulario de la registro
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                 }else {
                     Toast.makeText(RegisterActivity.this, "No se pudo crear el cliente", Toast.LENGTH_SHORT).show();
                 }

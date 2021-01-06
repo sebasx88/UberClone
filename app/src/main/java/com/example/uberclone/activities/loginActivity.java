@@ -4,12 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.uberclone.R;
+import com.example.uberclone.activities.client.MapClientActivity;
+import com.example.uberclone.activities.client.RegisterActivity;
+import com.example.uberclone.activities.driver.MapDriverActivity;
+import com.example.uberclone.activities.driver.RegisterDriverActivity;
 import com.example.uberclone.include.MyToolbar;
 import com.example.uberclone.providers.AuthProvider;
 import com.example.uberclone.providers.ClientProvider;
@@ -30,6 +36,7 @@ public class loginActivity extends AppCompatActivity {
     ClientProvider mClientProvider;
 
     AlertDialog mDialog;
+    SharedPreferences mPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +49,10 @@ public class loginActivity extends AppCompatActivity {
         mTextInputEmail = findViewById(R.id.textInputEmail);
         getmTextInputPassword = findViewById(R.id.textInputPassword);
         mButtonLogin = findViewById(R.id.btnLogin);
-
         mAuthProvider = new AuthProvider();
         mClientProvider = new ClientProvider();
-
         mDialog = new SpotsDialog.Builder().setContext(loginActivity.this).setMessage("Espere un momento").build();
-
+        mPref = getApplicationContext().getSharedPreferences("typeUser", MODE_PRIVATE);
         mButtonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,10 +74,23 @@ public class loginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
-                            Toast.makeText(loginActivity.this, "El login se realizo exitosamente", Toast.LENGTH_SHORT).show();
+                            String user = mPref.getString("user", "");
+                            if (user.equals("client")){
+                                //Toast.makeText(loginActivity.this, "El login se realizo exitosamente", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(loginActivity.this, MapClientActivity.class);
+                                //Con el Flags evitamos que el conductor se pueda devolver al formulario de la registro
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }else{
+                                //Toast.makeText(loginActivity.this, "El email o password son incorrectos", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(loginActivity.this, MapDriverActivity.class);
+                                //Con el Flags evitamos que el conductor se pueda devolver al formulario de la registro
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }
                         }
                         else{
-                            Toast.makeText(loginActivity.this, "El email o password son incorrectos", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(loginActivity.this, "La contraseña o password son incorrectos", Toast.LENGTH_SHORT).show();
                         }
                         mDialog.dismiss();
                     }

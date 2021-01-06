@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -91,7 +92,7 @@ public class RegisterDriverActivity extends AppCompatActivity {
                 mDialog.hide();
                 if (task.isSuccessful()){
                     String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    Driver driver = new Driver(name, email, id, brand, plate); 
+                    Driver driver = new Driver(name, email, id, brand, plate);
                     create(driver);
                 }else {
                     Toast.makeText(RegisterDriverActivity.this, "No se pudo registrar el usuario ", Toast.LENGTH_SHORT).show();
@@ -105,7 +106,11 @@ public class RegisterDriverActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
-                    Toast.makeText(RegisterDriverActivity.this, "El registro se realizo", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(RegisterDriverActivity.this, "El registro se realizo", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(RegisterDriverActivity.this, MapDriverActivity.class);
+                        //Con el Flags evitamos que el conductor se pueda devolver al formulario de la registro
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                 }else {
                     Toast.makeText(RegisterDriverActivity.this, "No se pudo crear el cliente", Toast.LENGTH_SHORT).show();
                 }

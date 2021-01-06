@@ -96,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="30dp"
-                android:text="REGISTRAR"
+                android:text="INGRESAR"
                 android:background="@drawable/rounded_buttom"
                 android:backgroundTint="@color/colorPrimary"
                 android:textColor="@color/colorWhite">

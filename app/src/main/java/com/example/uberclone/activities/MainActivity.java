@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.uberclone.R;
+import com.example.uberclone.activities.client.MapClientActivity;
+import com.example.uberclone.activities.driver.MapDriverActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +45,30 @@ public class MainActivity extends AppCompatActivity {
                 goToSelectAuth();
             }
         });
+    }
+
+    //esto mantiene la sesion activa cuando el usuario se ha registrado
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //esto quiere decir que si existe un usuario
+        if (FirebaseAuth.getInstance().getCurrentUser() != null){
+            String user = mPref.getString("user", "");
+
+            if (user.equals("client")){
+                //Toast.makeText(loginActivity.this, "El login se realizo exitosamente", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, MapClientActivity.class);
+                //Con el Flags evitamos que el conductor se pueda devolver al formulario de la registro
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }else{
+                //Toast.makeText(loginActivity.this, "El email o password son incorrectos", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, MapDriverActivity.class);
+                //Con el Flags evitamos que el conductor se pueda devolver al formulario de la registro
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        }
     }
 
     private void goToSelectAuth() {
