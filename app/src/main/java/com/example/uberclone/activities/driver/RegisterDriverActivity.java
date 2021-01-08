@@ -108,7 +108,7 @@ public class RegisterDriverActivity extends AppCompatActivity {
                 if (task.isSuccessful()){
                         //Toast.makeText(RegisterDriverActivity.this, "El registro se realizo", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegisterDriverActivity.this, MapDriverActivity.class);
-                        //Con el Flags evitamos que el conductor se pueda devolver al formulario de la registro
+                        //Con el Flags evitamos que el conductor se pueda devolver al formulario de registro
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                 }else {

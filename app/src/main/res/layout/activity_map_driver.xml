@@ -7,32 +7,12 @@
     android:fitsSystemWindows="true"
     tools:context=".activities.driver.MapDriverActivity">
 
-    <LinearLayout
+    <fragment
+        android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Este es el mapa de conductor">
-
-        </TextView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <Button
-                android:id="@+id/btnlogout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="cerrar sesion">
-
-            </Button>
-
-        </LinearLayout>
-    </LinearLayout>
 
 
 

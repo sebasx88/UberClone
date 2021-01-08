@@ -1,37 +1,35 @@
 package com.example.uberclone.activities.driver;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
 import com.example.uberclone.R;
 import com.example.uberclone.activities.MainActivity;
 import com.example.uberclone.providers.AuthProvider;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 
-public class MapDriverActivity extends AppCompatActivity {
+public class MapDriverActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    Button mButtonLogOut;
-    AuthProvider mAuthProvider;
+    private GoogleMap mMap;
+    private SupportMapFragment mMapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_driver);
 
-        mButtonLogOut = findViewById(R.id.btnlogout);
-        mAuthProvider = new AuthProvider();
+        mMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mMapFragment.getMapAsync(this);
 
-        mButtonLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuthProvider.logout();
-                Intent intent = new Intent(MapDriverActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 }
