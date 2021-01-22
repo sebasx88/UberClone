@@ -24,4 +24,17 @@ public class AuthProvider {
     public void logout(){
         mAuth.signOut();
     }
+
+    //Retorna el id del usuario
+    public String getId(){
+        return mAuth.getCurrentUser().getUid();
+    }
+
+    //Verifica que la sesion exista con el id del usuario
+    public boolean existSession(){
+        boolean exist = false;
+        if (mAuth.getCurrentUser() != null){
+            exist = true;
+        }return exist;
+    }
 }
