@@ -3,6 +3,7 @@ package com.example.uberclone.providers;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,5 +28,13 @@ public class GeofireProvider {
     //eliminar la localizacion
     public void removeLocation(String idDriver){
         mGeoFire.removeLocation(idDriver);
+    }
+
+
+    //Metodo para obtener los conductores disponibles en un radio de 5Km con acceso a longitud y latitud
+    public GeoQuery getActiveDrivers(LatLng latLng){
+        GeoQuery geoQuery = mGeoFire.queryAtLocation(new GeoLocation(latLng.latitude, latLng.longitude), 5);
+        geoQuery.removeAllListeners();
+        return geoQuery;
     }
 }
